@@ -51,7 +51,7 @@ You may request removal (right to be forgotten) via a pull request or issue.
 
 | # | Player | Shots | Date |
 |---|---|---|---|
-| 1 | @Diego-PB | 4 | 2025-07-16 |
+| 1 | @Diego-PB | 11 | 2025-07-16 |
 
 **0 anonymous deaths**
 
@@ -59,5 +59,5 @@ You may request removal (right to be forgotten) via a pull request or issue.
 
 | Rank | Player | Shots |
 |---|---|---|
-| 🥇 | @Diego-PB | 4 |
+| 🥇 | @Diego-PB | 11 |
 <!--GRAVEYARD_END-->
