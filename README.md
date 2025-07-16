@@ -4,8 +4,8 @@
 
 ## 💀 Hall of Fame
 
-| # | Player | Date |
-|---|---|---|
+| # | Player | Shots | Date |
+|---|---|---|---|
 
 
 **0 anonymous deaths**
