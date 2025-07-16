@@ -1,29 +1,4 @@
 #!/usr/bin/env python3
-"""
-Deadly Roulette – GitHub‑synced version
-======================================
-
-► Auteur : Diego‑PB
-► Dépôt  : https://github.com/Diego-PB/Deadly-Roulette
-► Fichier partagé : deaths.json (racine du repo)
-
-Fonctionnement
---------------
-• Le jeu récupère `deaths.json` via GitHub RAW pour savoir si le joueur est déjà mort.
-• S'il meurt, il pousse immédiatement une nouvelle version de ce fichier via l'API GitHub
-  (PUT /repos/:owner/:repo/contents/deaths.json).
-• Nécessite un token disposant du scope **public_repo** (ou repo complet si ton dépôt
-  est privé). Le joueur l'obtient simplement avec :
-
-    gh auth refresh -h github.com -s public_repo
-
----
-
-Avant la première exécution :
-1. Ajoute à la racine de ton repo *Deadly‑Roulette* un fichier `deaths.json` contenant : `[]`
-2. (Facultatif) Protège la branche si tu veux éviter la triche, mais alors il faut gérer les PR.
-
-"""
 
 import sys
 import random
@@ -43,10 +18,6 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 from PySide6.QtMultimedia import QSoundEffect
 
-
-# ----------------------------------------------------------------------
-#  PARAMÈTRES GITHUB – à adapter uniquement si tu changes de repo
-# ----------------------------------------------------------------------
 REPO_OWNER   = "Diego-PB"
 REPO_NAME    = "Deadly-Roulette"
 FILE_PATH    = "deaths.json"
@@ -54,10 +25,6 @@ FILE_PATH    = "deaths.json"
 RAW_URL      = f"https://raw.githubusercontent.com/{REPO_OWNER}/{REPO_NAME}/main/{FILE_PATH}"
 API_CONTENTS = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}"
 
-
-# ----------------------------------------------------------------------
-#  UTILITAIRES GITHUB : login + token + (dé)serialization du JSON
-# ----------------------------------------------------------------------
 class GitHubError(RuntimeError):
     pass
 
@@ -86,10 +53,6 @@ def get_github_token() -> str:
 def sha256_hex(text: str) -> str:
     return hashlib.sha256(text.encode()).hexdigest()
 
-
-# ----------------------------------------------------------------------
-#  Graveyard : lecture + écriture sur GitHub
-# ----------------------------------------------------------------------
 def fetch_remote_deaths(token: str) -> tuple[list[dict], str]:
     """
     Retourne (deaths, sha_actuel) via l'API.
@@ -154,10 +117,6 @@ def report_death_remote(token: str, login: str,
                 continue
             raise
 
-
-# ----------------------------------------------------------------------
-#  IHM PySide 6
-# ----------------------------------------------------------------------
 class IntroDialog(QDialog):
     def __init__(self):
         super().__init__()
@@ -245,12 +204,6 @@ class GameWindow(QWidget):
             self.sfx_click.play()
             self.status.setText(f"Click… shots so far: {self.shots}")
 
-
-
-
-# ----------------------------------------------------------------------
-#  MAIN
-# ----------------------------------------------------------------------
 def main():
     app = QApplication(sys.argv)
 
@@ -281,7 +234,6 @@ def main():
     win = GameWindow(login, h, intro.consent_public, token)
     win.show()
     sys.exit(app.exec())
-
 
 if __name__ == "__main__":
     main()
