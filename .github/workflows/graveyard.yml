@@ -1,0 +1,21 @@
+name: Update Graveyard
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  schedule:
+    - cron:  '0 * * * *'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: python .github/scripts/update_graveyard.py
+      - run: git push
