@@ -207,6 +207,7 @@ class GameWindow(QWidget):
         self.shots = 0  #
         self.status = QLabel("Press the trigger (shots: 0)…", alignment=Qt.AlignCenter)
 
+        self.committed = False
 
         lay = QVBoxLayout(self)
         lay.addWidget(self.status)
@@ -218,19 +219,32 @@ class GameWindow(QWidget):
         # self.sfx_bang.setSource(QUrl.fromLocalFile("assets/bang.wav"))
 
     def pull_trigger(self):
-        self.shots += 1                                 # incrémente à chaque clic
+        self.shots += 1
         if random.randint(1, 6) == 1:
             self.sfx_bang.play()
             self.status.setText(f"💥 BANG! You are dead after {self.shots} shots.")
             try:
-                report_death_remote(self.token, self.login, self.h,
-                                    self.public, self.shots)    # <-- on transmet
+                report_death_remote(
+                    self.token, self.login, self.h, self.public, self.shots
+                )
+                self.committed = True
+                QMessageBox.information(
+                    self,
+                    "Recorded",
+                    "Your death has been recorded on GitHub.\nYou may now close the game.",
+                )
             except GitHubError as err:
-                QMessageBox.warning(self, "GitHub error", str(err))
+                QMessageBox.warning(
+                    self,
+                    "GitHub error",
+                    f"Could not record your death automatically:\n{err}\n"
+                    "The game will try again next launch.",
+                )
             self.trigger.setEnabled(False)
         else:
             self.sfx_click.play()
             self.status.setText(f"Click… shots so far: {self.shots}")
+
 
 
 
