@@ -47,7 +47,7 @@ You may request removal (right to be forgotten) via a pull request or issue.
 
 <!--GRAVEYARD_START-->
 
-# 💀 Hall of Fame
+## 💀 Hall of Fame
 
 | # | Player | Shots | Date |
 |---|---|---|---|
