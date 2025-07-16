@@ -22,11 +22,12 @@ def load_deaths():
     return public, anon
 
 def build_table(public, anon):
-    header = "| # | Player | Date |\n|---|---|---|\n"
+    header = "| # | Player | Shots | Date |\n|---|---|---|---|\n"
     rows = []
     for i, d in enumerate(public, 1):
-        date = d["timestamp"].split("T")[0]
-        rows.append(f"| {i} | @{d['login']} | {date} |")
+        date  = d["timestamp"].split("T")[0]
+        shots = d.get("shots", "?")          # les anciennes entrées n’en ont pas
+        rows.append(f"| {i} | @{d['login']} | {shots} | {date} |")
     table = header + "\n".join(rows) + f"\n\n**{anon} anonymous deaths**\n"
     return table
 

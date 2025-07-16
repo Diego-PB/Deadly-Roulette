@@ -126,15 +126,11 @@ def already_dead_remote(token: str, hash_login: str) -> bool:
         deaths, _ = fetch_remote_deaths(token)
         return any(d["hash"] == hash_login for d in deaths)
     except Exception:
-        # Réseau KO -> soft‑fail, on laisse jouer
         return False
 
 
-def report_death_remote(token: str, login: str, hash_login: str, public: bool):
-    """
-    Insère la nouvelle mort et pousse le commit.
-    Gestion basique des conflits : 3 tentatives max.
-    """
+def report_death_remote(token: str, login: str,
+                        hash_login: str, public: bool, shots: int):
     for attempt in range(3):
         meta = get_file_meta(token)
         sha_current = meta["sha"]
@@ -144,6 +140,7 @@ def report_death_remote(token: str, login: str, hash_login: str, public: bool):
             "hash": hash_login,
             "login": login if public else None,
             "public": public,
+            "shots": shots,                 
             "timestamp": datetime.now(timezone.utc).isoformat(),
         })
 
@@ -207,6 +204,10 @@ class GameWindow(QWidget):
         self.trigger = QPushButton("Pull the trigger")
         self.trigger.clicked.connect(self.pull_trigger)
 
+        self.shots = 0  #
+        self.status = QLabel("Press the trigger (shots: 0)…", alignment=Qt.AlignCenter)
+
+
         lay = QVBoxLayout(self)
         lay.addWidget(self.status)
         lay.addWidget(self.trigger)
@@ -217,17 +218,20 @@ class GameWindow(QWidget):
         # self.sfx_bang.setSource(QUrl.fromLocalFile("assets/bang.wav"))
 
     def pull_trigger(self):
+        self.shots += 1                                 # incrémente à chaque clic
         if random.randint(1, 6) == 1:
             self.sfx_bang.play()
-            self.status.setText("💥 BANG! You are dead.")
+            self.status.setText(f"💥 BANG! You are dead after {self.shots} shots.")
             try:
-                report_death_remote(self.token, self.login, self.h, self.public)
+                report_death_remote(self.token, self.login, self.h,
+                                    self.public, self.shots)    # <-- on transmet
             except GitHubError as err:
                 QMessageBox.warning(self, "GitHub error", str(err))
             self.trigger.setEnabled(False)
         else:
             self.sfx_click.play()
-            self.status.setText("Click… you survived! Care to try again?")
+            self.status.setText(f"Click… shots so far: {self.shots}")
+
 
 
 # ----------------------------------------------------------------------
