@@ -20,18 +20,31 @@ Deadly Roulette is a tiny Python + PySide 6 Russian‑roulette game.If the 
 
 ---
 
-## 🛠️ Quick install (players)
+🛠️ Quick install (players)
 
-1. Download the latest release : [Deadly Roulette.exe](https://github.com/Diego-PB/Deadly-Roulette/releases/latest)
+Download the latest release : Deadly Roulette.exe
 
-2. Install [GitHub CLI](https://cli.github.com/) and log in:
+Install GitHub CLI and run the two authentication commands in the same terminal that will launch the game :
 
 ```bash
+# 1 · Log in to GitHub
 gh auth login
+
+# 2 · Add the write scope used by the game
 gh auth refresh -h github.com -s public_repo
 ```
 
-3. Run the executable. Pull the trigger. Good luck!
+From that same terminal, start the game :
+
+```bash
+path\to\Deadly_Roulette.exe
+# or
+./Deadly_Roulette.exe # on macOS/Linux
+```
+
+> Double‑clicking the EXE directly may fail to detect the GitHub token. Always launch it from the terminal where you just ran the gh commands.
+
+Pull the trigger. Good luck!
 
 ---
 
