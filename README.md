@@ -20,7 +20,7 @@ Deadly Roulette is a tiny Python + PySide 6 Russian‑roulette game.If the 
 
 ---
 
-🛠️ Quick install (players)
+## 🛠️ Quick install (players)
 
 Download the latest release : [Deadly_Roulette.exe](https://github.com/Diego-PB/Deadly-Roulette/releases/latest)
 
